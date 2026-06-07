@@ -1,5 +1,7 @@
 const express = require('express');
+const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
+const foodRoutes = require('./routes/foodRoutes');
 const connectDB = require('./config/config');
 const app = express();
 const port = 3000;
@@ -18,7 +20,9 @@ connectDB()
 
 
 app.use(express.json());
+app.use(cors());
 app.use('/api', userRoutes);
+app.use('/api', foodRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello, Ashish!');

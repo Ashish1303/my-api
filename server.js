@@ -6,7 +6,7 @@ const dishrouter = require('./routes/dishRoute');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const connectDB = require('./config/config');
 const app = express();
-const port = 3000;
+const port = 7777;
 connectDB()
 .then(() => {
   console.log('Database connected successfully');

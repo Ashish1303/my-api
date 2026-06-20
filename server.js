@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const foodRoutes = require('./routes/foodRoutes');
+const dishrouter = require('./routes/dishRoute');
+const restaurantRoutes = require('./routes/restaurantRoutes');
 const connectDB = require('./config/config');
 const app = express();
 const port = 3000;
@@ -23,6 +25,8 @@ app.use(express.json());
 app.use(cors());
 app.use('/api', userRoutes);
 app.use('/api', foodRoutes);
+app.use('/api', restaurantRoutes);
+app.use('/api', dishrouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, Ashish!');

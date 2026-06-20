@@ -2,6 +2,7 @@
   const jwt = require('jsonwebtoken');
   const bcrypt = require('bcrypt');
   const user = require('../models/user');
+  const secret = 'GharKaBite_ _secret_key';
 
 const getUsers =async (req, res) => {
  try {   const users = await User.find();
@@ -75,6 +76,19 @@ const getUserByEmail = async (req, res) => {
   }  
    
 };
+const generateToken = (user) => jwt.sign({ id: user.id }, secret, { expiresIn: '12h' });
+const authMiddleware = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Authorization required' });
+  try {
+    const decoded = jwt.verify(token, secret);
+    req.userId = decoded.id;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
 const getUserLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -90,7 +104,10 @@ const getUserLogin = async (req, res) => {
       res.cookie("token", token, {
         expires: new Date(Date.now() + 8 * 3600000),
       });
-      res.send(user).select("email name _id");
+      const tokenL = generateToken(user);
+      // res.send(user).select("email name _id");
+  return res.json({ tokenL, user: { id: user.id, name: user.name, email: user.email, mobile: user.mobile } });
+
     } else {
       throw new Error("Invalid credentials");
     }
@@ -114,5 +131,7 @@ module.exports = {
   postUser,
   getUserLogin,
   getUserByEmail,
-  logout  
+  logout,
+  generateToken,
+  authMiddleware
 };

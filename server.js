@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config()
 const userRoutes = require('./routes/userRoutes');
 const foodRoutes = require('./routes/foodRoutes');
 const dishrouter = require('./routes/dishRoute');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const connectDB = require('./config/config');
 const app = express();
-const port = 7777;
+const port = 3000;
 connectDB()
 .then(() => {
   console.log('Database connected successfully');
